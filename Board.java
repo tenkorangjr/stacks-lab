@@ -60,7 +60,11 @@ public class Board {
                 // print the size of the String array (you can use .length)
                 // use the line to set various Cells of this Board accordingly
                 for (int i = 0; i < newArr.length; i++) {
-                    arr[row][i] = new Cell(row, i, Integer.parseInt(newArr[i]));
+                    if (Integer.parseInt(newArr[i]) != 0) {
+                        arr[row][i] = new Cell(row, i, Integer.parseInt(newArr[i]), true);
+                    } else {
+                        arr[row][i] = new Cell(row, i, Integer.parseInt(newArr[i]));
+                    }
                 }
                 // assign to line the result of calling the readLine method of your
                 // BufferedReader object.
