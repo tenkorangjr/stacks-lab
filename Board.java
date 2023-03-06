@@ -8,6 +8,7 @@ public class Board {
     Cell[][] arr;
 
     public Board() {
+        arr = new Cell[9][9];
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 arr[i][j] = new Cell(i, j, 0);
@@ -54,11 +55,9 @@ public class Board {
             // start a while loop that loops while line isn't null
             int row = 0;
             while (line != null) {
-                System.out.println(line);
                 // assign to an array of Strings the result of splitting the line up by spaces
                 String[] newArr = line.split("[ ]+");
                 // print the size of the String array (you can use .length)
-                System.out.println(arr.length);
                 // use the line to set various Cells of this Board accordingly
                 for (int i = 0; i < newArr.length; i++) {
                     arr[row][i] = new Cell(row, i, Integer.parseInt(newArr[i]));
@@ -81,15 +80,16 @@ public class Board {
     }
 
     public String toString() {
-        String toReturn = "";
+        String toReturn = "\n";
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 toReturn += arr[i][j] + " ";
-                if (j + 1 % 3 == 0) {
+                if ((j + 1) % 3 == 0) {
                     toReturn += " ";
                 }
             }
-            if (i + 1 % 3 == 0) {
+            toReturn += "\n";
+            if ((i + 1) % 3 == 0) {
                 toReturn += "\n";
             }
         }
@@ -101,6 +101,7 @@ public class Board {
         Board board = new Board();
         if (args.length > 0) {
             board.read(args[0]);
+            System.out.println(board);
         } else {
             System.out.println("Usage: filename for board");
         }
