@@ -6,7 +6,7 @@
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class LinkedList<T> implements Iterable<T>, Stack<T> {
+public class LinkedList<T> implements Iterable<T>, Stack<T>, Queue<T> {
 
     private class Node<T> {
         // Class for the Node
@@ -348,20 +348,30 @@ public class LinkedList<T> implements Iterable<T>, Stack<T> {
 
     @Override
     public void push(T item) {
-        addLast(item);
+        addFirst(item);
     }
 
     @Override
     public T pop() {
-        return removeLast();
+        return removeFirst();
+    }
+
+    @Override
+    public void offer(T item) {
+        addLast(item);
+    }
+
+    @Override
+    public T poll() {
+        return removeFirst();
     }
 
     @Override
     public T peek() {
-        if (tail == null) {
+        if (head == null) {
             return null;
         }
-        return tail.getData();
+        return head.getData();
     }
 
     public String toString() {
