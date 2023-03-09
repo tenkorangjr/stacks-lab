@@ -113,6 +113,12 @@ public class Board {
             System.out.println("Usage: filename for board");
         }
 
+        // for (Cell[] row : board.arr) {
+        // for (Cell cell : row) {
+        // System.out.println(cell.isLocked());
+        // }
+        // }
+
     }
 
 }
