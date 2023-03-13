@@ -48,7 +48,7 @@ public class Sudoku {
 
         Stack<Cell> stack = new LinkedList<>();
 
-        while (stack.size() < (board.getCol() * board.getRow()) - board.numberOfLockedCells()) {
+        while (stack.size() < (board.getCols() * board.getRows()) - board.numLocked()) {
 
             Cell next = findNextCell();
 

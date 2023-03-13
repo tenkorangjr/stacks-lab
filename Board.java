@@ -3,20 +3,24 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Random;
+import java.awt.*;;
 
 public class Board {
 
     Cell[][] arr;
     public static final int SIZE = 9;
     private int numberOfLockedCells;
+    boolean finished;
 
     Random random;
 
     public Board() {
-        arr = new Cell[getRow()][getCol()];
+        arr = new Cell[getRows()][getCols()];
+        finished = false;
+        numberOfLockedCells = 0;
 
-        for (int i = 0; i < getRow(); i++) {
-            for (int j = 0; j < getCol(); j++) {
+        for (int i = 0; i < getRows(); i++) {
+            for (int j = 0; j < getCols(); j++) {
                 arr[i][j] = new Cell(i, j, 0);
             }
         }
@@ -26,16 +30,17 @@ public class Board {
         random = new Random();
         int[][] filledPositions = generateUniquePositions(filled);
         numberOfLockedCells = filled;
-        arr = new Cell[getRow()][getCol()];
+        finished = false;
+        arr = new Cell[getRows()][getCols()];
 
-        for (int i = 0; i < getRow(); i++) {
-            for (int j = 0; j < getCol(); j++) {
+        for (int i = 0; i < getRows(); i++) {
+            for (int j = 0; j < getCols(); j++) {
                 arr[i][j] = new Cell(i, j, 0);
             }
         }
 
-        for (int i = 0; i < getRow(); i++) {
-            for (int j = 0; j < getCol(); j++) {
+        for (int i = 0; i < getRows(); i++) {
+            for (int j = 0; j < getCols(); j++) {
                 if (!positionContains(filledPositions, i, j)) {
                     arr[i][j] = new Cell(i, j, 0);
                 } else {
@@ -50,7 +55,24 @@ public class Board {
         }
     }
 
-    public int numberOfLockedCells() {
+    public void draw(Graphics g, int scale) {
+        for (int i = 0; i < getRows(); i++) {
+            for (int j = 0; j < getCols(); j++) {
+                get(i, j).draw(g, j * scale + 5, i * scale + 10, scale);
+            }
+        }
+        if (finished) {
+            if (validSolution()) {
+                g.setColor(new Color(0, 127, 0));
+                g.drawChars("Hurray!".toCharArray(), 0, "Hurray!".length(), scale * 3 + 5, scale * 10 + 10);
+            } else {
+                g.setColor(new Color(127, 0, 0));
+                g.drawChars("No solution!".toCharArray(), 0, "No Solution!".length(), scale * 3 + 5, scale * 10 + 10);
+            }
+        }
+    }
+
+    public int numLocked() {
         /*
          * Get the total number of locked cells
          */
@@ -58,7 +80,7 @@ public class Board {
         return numberOfLockedCells;
     }
 
-    public int getRow() {
+    public int getRows() {
         /*
          * Get the total row of a board
          */
@@ -66,12 +88,26 @@ public class Board {
         return SIZE;
     }
 
-    public int getCol() {
+    public int getCols() {
         /*
          * Get the total column of a board
          */
 
         return SIZE;
+    }
+
+    public boolean isLocked(int r, int c) {
+        /*
+         * Check whether the cell at (r,c) is locked
+         */
+        return get(r, c).isLocked();
+    }
+
+    public int value(int r, int c) {
+        /*
+         * Return the value at (r,c)
+         */
+        return get(r, c).getValue();
     }
 
     private int[][] generateUniquePositions(int number) {
@@ -111,13 +147,13 @@ public class Board {
          * Test to see if a value is value for a coordinate
          */
 
-        for (int r = 0; r < getRow(); r++) {
+        for (int r = 0; r < getRows(); r++) {
             if (r != row && arr[r][column].getValue() == value) {
                 return false;
             }
         }
 
-        for (int c = 0; c < getCol(); c++) {
+        for (int c = 0; c < getCols(); c++) {
             if (c != column && arr[row][c].getValue() == value) {
                 return false;
             }
@@ -138,8 +174,8 @@ public class Board {
         /*
          * Check if the board has been completed
          */
-        for (int r = 0; r < getRow(); r++) {
-            for (int c = 0; c < getCol(); c++) {
+        for (int r = 0; r < getRows(); r++) {
+            for (int c = 0; c < getCols(); c++) {
                 int currVal = arr[r][c].getValue();
                 if (!validValue(r, c, currVal) || currVal < 1 || currVal > 9) {
                     return false;
