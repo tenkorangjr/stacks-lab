@@ -1,2 +1,2 @@
-# Stacks for Sudoku Solver
-Stack for starting Sudoku Solver
+# LinkedList Stack for Sudoku Solver
+Stack interface for Depth First Search
