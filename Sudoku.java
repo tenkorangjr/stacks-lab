@@ -1,9 +1,11 @@
 public class Sudoku {
 
     Board board;
+    LandscapeDisplay ld;
 
     public Sudoku(int initialValues) {
         board = new Board(initialValues);
+        ld = new LandscapeDisplay(board);
     }
 
     public int findNextValue(Cell curr) {
@@ -41,7 +43,7 @@ public class Sudoku {
         return null;
     }
 
-    public boolean solve() {
+    public boolean solve(int delay) {
         /*
          * Solve a given board
          */
@@ -51,6 +53,15 @@ public class Sudoku {
         while (stack.size() < (board.getCols() * board.getRows()) - board.numLocked()) {
 
             Cell next = findNextCell();
+
+            if (delay > 0)
+                try {
+                    Thread.sleep(delay);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            if (ld != null)
+                ld.repaint();
 
             while (next == null & stack.size() > 0) {
                 Cell temp = stack.pop();
@@ -69,6 +80,7 @@ public class Sudoku {
             }
         }
 
+        board.finished = true;
         return true;
     }
 
@@ -76,7 +88,7 @@ public class Sudoku {
         Sudoku gameSudoku = new Sudoku(10);
         System.out.println(gameSudoku.board);
 
-        System.out.println(gameSudoku.solve());
+        System.out.println(gameSudoku.solve(10));
         System.out.println(gameSudoku.board);
     }
 }
