@@ -8,14 +8,15 @@ public class Board {
 
     Cell[][] arr;
     public static final int SIZE = 9;
+    private int numberOfLockedCells;
 
     Random random;
 
     public Board() {
-        arr = new Cell[9][9];
+        arr = new Cell[getRow()][getCol()];
 
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
+        for (int i = 0; i < getRow(); i++) {
+            for (int j = 0; j < getCol(); j++) {
                 arr[i][j] = new Cell(i, j, 0);
             }
         }
@@ -24,16 +25,17 @@ public class Board {
     public Board(int filled) {
         random = new Random();
         int[][] filledPositions = generateUniquePositions(filled);
-        arr = new Cell[9][9];
+        numberOfLockedCells = filled;
+        arr = new Cell[getRow()][getCol()];
 
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
+        for (int i = 0; i < getRow(); i++) {
+            for (int j = 0; j < getCol(); j++) {
                 arr[i][j] = new Cell(i, j, 0);
             }
         }
 
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
+        for (int i = 0; i < getRow(); i++) {
+            for (int j = 0; j < getCol(); j++) {
                 if (!positionContains(filledPositions, i, j)) {
                     arr[i][j] = new Cell(i, j, 0);
                 } else {
@@ -46,6 +48,30 @@ public class Board {
                 }
             }
         }
+    }
+
+    public int numberOfLockedCells() {
+        /*
+         * Get the total number of locked cells
+         */
+
+        return numberOfLockedCells;
+    }
+
+    public int getRow() {
+        /*
+         * Get the total row of a board
+         */
+
+        return SIZE;
+    }
+
+    public int getCol() {
+        /*
+         * Get the total column of a board
+         */
+
+        return SIZE;
     }
 
     private int[][] generateUniquePositions(int number) {
@@ -84,14 +110,14 @@ public class Board {
         /*
          * Test to see if a value is value for a coordinate
          */
-        // Test row
-        for (int r = 0; r < 9; r++) {
+
+        for (int r = 0; r < getRow(); r++) {
             if (r != row && arr[r][column].getValue() == value) {
                 return false;
             }
         }
 
-        for (int c = 0; c < 9; c++) {
+        for (int c = 0; c < getCol(); c++) {
             if (c != column && arr[row][c].getValue() == value) {
                 return false;
             }
@@ -112,8 +138,8 @@ public class Board {
         /*
          * Check if the board has been completed
          */
-        for (int r = 0; r < 9; r++) {
-            for (int c = 0; c < 9; c++) {
+        for (int r = 0; r < getRow(); r++) {
+            for (int c = 0; c < getCol(); c++) {
                 int currVal = arr[r][c].getValue();
                 if (!validValue(r, c, currVal) || currVal < 1 || currVal > 9) {
                     return false;
@@ -212,7 +238,7 @@ public class Board {
     }
 
     public static void main(String[] args) {
-        Board board = new Board(17);
+        Board board = new Board(40);
         System.out.println(board);
         // if (args.length > 0) {
         // board.read(args[0]);
