@@ -274,14 +274,13 @@ public class Board {
     }
 
     public static void main(String[] args) {
-        Board board = new Board(40);
-        System.out.println(board);
-        // if (args.length > 0) {
-        // board.read(args[0]);
-        // System.out.println(board);
-        // } else {
-        // System.out.println("Usage: filename for board");
-        // }
+        Board board = new Board();
+        if (args.length > 0) {
+            board.read(args[0]);
+            System.out.println(board);
+        } else {
+            System.out.println("Usage: filename for board");
+        }
 
     }
 
